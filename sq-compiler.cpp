@@ -4,7 +4,7 @@
 
 void compile_error_handler(HSQUIRRELVM v, const SQChar* desc, const SQChar* source, SQInteger line, SQInteger column)
 {
-	std::cerr << "Error in " << source << ":" << line << ":" << column << ", " << desc << std::endl;
+	std::cerr << "Error in " << source << " on line " << line << " column " << column << ": " << desc << std::endl;
 }
 
 int main(int argc, char** argv)
