@@ -4,13 +4,14 @@
 
 void compile_error_handler(HSQUIRRELVM v, const SQChar* desc, const SQChar* source, SQInteger line, SQInteger column)
 {
-	std::cout << "Error in " << source << ":" << line << ":" << column << ", " << desc << std::endl;
+	std::cerr << "Error in " << source << ":" << line << ":" << column << ", " << desc << std::endl;
 }
 
 int main(int argc, char** argv)
 {
-	if (argc < 3) {
+	if (argc < 2) {
 		std::cout << "Usage: " << argv[0] << " [source file] [destination file]" << std::endl;
+		std::cout << "Calling without a destination file will merely do syntax checks." << std::endl;
 		return 1;
 	}
 
@@ -31,9 +32,13 @@ int main(int argc, char** argv)
 		return 3;
 	}
 
-	// serialize closure containing the source
-	if (SQ_FAILED(sqstd_writeclosuretofile(v, argv[2]))) {
-		std::cout << "Error: Could not serialize closure" << std::endl;
+	// only if an output file was passed
+	if (argc >= 3)
+	{
+		// serialize closure containing the source
+		if (SQ_FAILED(sqstd_writeclosuretofile(v, argv[2]))) {
+			std::cout << "Error: Could not serialize closure" << std::endl;
+		}
 	}
 
 	// clean up.
