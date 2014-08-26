@@ -1,0 +1,4 @@
+[submodule "squirrel"]
+	path = squirrel
+	url = https://github.com/pfalcon/squirrel-lang.git
+	branch = squirrel3.1
