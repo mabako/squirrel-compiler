@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Product Id="e8383948-d479-40bb-a40d-1cb2be3d2075" Name="Squirrel Compiler" Language="1033" Version="1.0.0.0" Manufacturer="mabako" UpgradeCode="6085e488-28f3-44b6-beec-7b54b2c94edb">
+	<Product Id="e8383948-d479-40bb-a40d-1cb2be3d2075" Name="Squirrel Compiler" Language="1033" Version="1.0.3.0" Manufacturer="mabako" UpgradeCode="6085e488-28f3-44b6-beec-7b54b2c94edb">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
 		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
-		<MediaTemplate />
+		<MediaTemplate EmbedCab="yes" />
 
 		<Feature Id="SquirrelCompiler" Title="Squirrel Compiler" Level="1" ConfigurableDirectory="INSTALLFOLDER">
 			<ComponentGroupRef Id="SquirrelCompiler" />
