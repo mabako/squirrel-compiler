@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Product Id="e8383948-d479-40bb-a40d-1cb2be3d2075" Name="Squirrel Compiler" Language="1033" Version="1.0.0.0" Manufacturer="mabako" UpgradeCode="6085e488-28f3-44b6-beec-7b54b2c94edb">
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+		<MediaTemplate />
+
+		<Feature Id="SquirrelCompiler" Title="Squirrel Compiler" Level="1" ConfigurableDirectory="INSTALLFOLDER">
+			<ComponentGroupRef Id="SquirrelCompiler" />
+		</Feature>
+
+    <UI Id='xxx'>
+      <TextStyle Id="WixUI_Font_Normal" FaceName="Tahoma" Size="8" />
+      <TextStyle Id="WixUI_Font_Bigger" FaceName="Tahoma" Size="12" />
+      <TextStyle Id="WixUI_Font_Title" FaceName="Tahoma" Size="9" Bold="yes" />
+
+      <Property Id="DefaultUIFont" Value="WixUI_Font_Normal" />
+      <Property Id="WixUI_Mode" Value="Minimal" />
+
+      <DialogRef Id="ErrorDlg" />
+      <DialogRef Id="FatalError" />
+      <DialogRef Id="FilesInUse" />
+      <DialogRef Id="MsiRMFilesInUse" />
+      <DialogRef Id="PrepareDlg" />
+      <DialogRef Id="ProgressDlg" />
+      <DialogRef Id="ResumeDlg" />
+      <DialogRef Id="UserExit" />
+      <DialogRef Id="WelcomeDlg" />
+
+      <Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
+
+      <Publish Dialog="ExitDialog" Control="Finish" Event="EndDialog" Value="Return" Order="999">1</Publish>
+
+      <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="MaintenanceTypeDlg">1</Publish>
+
+      <Publish Dialog="MaintenanceWelcomeDlg" Control="Next" Event="NewDialog" Value="MaintenanceTypeDlg">1</Publish>
+
+      <Publish Dialog="MaintenanceTypeDlg" Control="RepairButton" Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
+      <Publish Dialog="MaintenanceTypeDlg" Control="RemoveButton" Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
+      <Publish Dialog="MaintenanceTypeDlg" Control="Back" Event="NewDialog" Value="MaintenanceWelcomeDlg">1</Publish>
+
+      <Property Id="ARPNOMODIFY" Value="yes" Secure="yes" />
+      <UIRef Id="WixUI_Common" />
+
+      <Property Id="NUTEXT">
+        <RegistrySearch Id="NutFile" Root="HKCR" Key=".nut" Type="raw"/>
+      </Property>
+    </UI>
+  </Product>
+
+  <Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+				<Directory Id="INSTALLFOLDER" Name="Squirrel Compiler" />
+			</Directory>
+		</Directory>
+	</Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="SquirrelCompiler" Directory="INSTALLFOLDER">
+      <Component>
+        <File Source="$(var.sq-compiler.TargetPath)" Id="sqcompiler" />
+      </Component>
+      <Component>
+        <File Source="$(var.sq-compiler-gui.TargetPath)" Id="sqcompilergui" />
+      </Component>
+
+      <Component>
+        <Condition>NOT NUTEXT</Condition>
+        <RegistryKey Root="HKCR" Key=".nut">
+          <RegistryValue Action="write" Value="nut_auto_file" Type="string"/>
+        </RegistryKey>
+        <RegistryKey Root="HKCR"
+                               Key="nut_auto_file\shell\compile">
+          <RegistryValue Action="write" Value="Compile" Type="string" />
+          <RegistryKey Key="command">
+            <RegistryValue Action="write" Type="string"
+              Value="&quot;[#sqcompilergui]&quot; %1"/>
+          </RegistryKey>
+        </RegistryKey>
+      </Component>
+      <Component>
+        <Condition>NUTEXT</Condition>
+        <RegistryKey Root="HKCR"
+                               Key="[NUTEXT]\shell\compile">
+          <RegistryValue Action="write" Value="Compile" Type="string" />
+          <RegistryKey Key="command">
+            <RegistryValue Action="write" Type="string"
+              Value="&quot;[#sqcompilergui]&quot; %1"/>
+          </RegistryKey>
+        </RegistryKey>
+      </Component>
+		</ComponentGroup>
+	</Fragment>
+</Wix>
