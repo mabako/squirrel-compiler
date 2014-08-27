@@ -3,3 +3,6 @@
 *.suo
 [Dd]ebug
 [Rr]elease
+*.o
+/sq-compiler/sq-compiler
+

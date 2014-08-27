@@ -1,10 +1,15 @@
 # Squirrel Compiler for squirrel 3.1
 
-## Installing
+## Installing on Windows
 
 1. Build with Visual Studio 2013.
 2. ?
 3. PROFIT
+
+## Installing on Linux
+
+1. `cd sq-compiler`
+2. `make`
 
 ## Compiling squirrel scripts
 
